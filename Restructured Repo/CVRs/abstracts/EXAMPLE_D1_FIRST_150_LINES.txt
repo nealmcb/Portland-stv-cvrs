@@ -14,23 +14,23 @@ Unique Ranking Expressions: 18895
 
 CANDIDATE LEGEND
 --------------------------------------------------------------------------------
-C01  Candace Avalos
-C02  Cayle Tern
-C03  David Linn
-C04  Deian Salazar
-C05  Doug Clove
-C06  Jamie Dunphy
-C07  Joe Allen
-C08  Joe Furi
-C09  Loretta Smith
-C10  Michael (Mike) Sands
-C11  Noah Ernst
-C12  Peggy Sue Owens
-C13  Steph Routh
-C14  Terrence Hayes
-C15  Thomas Shervey
-C16  Timur Ender
-C17  Uncertified Write In
+AVA  Candace Avalos
+SMI  Loretta Smith
+DUN  Jamie Dunphy
+ERN  Noah Ernst
+HAY  Terrence Hayes
+ROU  Steph Routh
+END  Timur Ender
+CLO  Doug Clove
+OWE  Peggy Sue Owens
+LIN  David Linn
+ALL  Joe Allen
+SAN  Michael (Mike) Sands
+SAL  Deian Salazar
+TER  Cayle Tern
+SHE  Thomas Shervey
+FUR  Joe Furi
+UIN  Uncertified Write In
 
 EXPLANATION
 --------------------------------------------------------------------------------
@@ -49,102 +49,102 @@ PREFERENCE PROFILE (PREFIX-COMPRESSED)
 ================================================================================
 
 (empty) : 798
-PREFIX: C01
+PREFIX: AVA
 --------------------------------------------------------------------------------
   (exact match) : 535
-  ... > C02 : 29
-  ... > C02 > C03 : 4
-  ... > C02 > C03 > C04 > C05 > C10 : 1
-  ... > C02 > C03 > C05 > C04 > C12 : 1
-  ... > C02 > C03 > C05 > C06 > C07 : 1
-  ... > C02 > C03 > C06 : 1
-  ... > C02 > C03 > C06 > C13 > C04 : 1
-  ... > C02 > C03 > C08 > C07 > C06 : 1
-  ... > C02 > C03 > C08 > C14 > C09 : 2
-  ... > C02 > C03 > C09 > C06 > C13 : 1
-  ... > C02 > C03 > C09 > C10 : 1
-  ... > C02 > C03 > C09 > C14 > C10 : 1
-  ... > C02 > C03 > C10 > C16 > C13 : 2
-  ... > C02 > C03 > C11 : 1
-  ... > C02 > C03 > C13 : 1
-  ... > C02 > C03 > C13 > C06 : 3
-  ... > C02 > C03 > C13 > C07 > C09 : 1
-  ... > C02 > C03 > C13 > C10 > C14 : 1
-  ... > C02 > C03 > C13 > C16 : 1
-  ... > C02 > C03 > C14 > C04 > C09 : 1
-  ... > C02 > C04 > C06 : 1
-  ... > C02 > C04 > C06 > C03 > C09 : 1
-  ... > C02 > C04 > C08 > C13 > C07 : 2
-  ... > C02 > C04 > C09 : 1
-  ... > C02 > C04 > C09 > C06 > C10 : 1
-  ... > C02 > C04 > C09 > C06 > C12 : 1
-  ... > C02 > C04 > C09 > C13 > C06 : 1
-  ... > C02 > C04 > C09 > C14 > C16 : 1
-  ... > C02 > C04 > C09 > C15 > C06 : 1
-  ... > C02 > C04 > C13 : 1
-  ... > C02 > C04 > C13 > C06 : 1
-  ... > C02 > C04 > C13 > C12 > C16 : 1
-  ... > C02 > C04 > C14 > C09 > C06 : 1
-  ... > C02 > C04 > C14 > C13 > C16 : 1
-  ... > C02 > C04 > C15 > C09 > C13 : 1
-  ... > C02 > C05 : 1
-  ... > C02 > C05 > C06 > C09 > C11 : 2
-  ... > C02 > C05 > C06 > C09 > C13 : 2
-  ... > C02 > C05 > C06 > C16 > C13 : 1
-  ... > C02 > C05 > C06 > C16 > C14 : 2
-  ... > C02 > C05 > C09 > C14 > C06 : 1
-  ... > C02 > C05 > C10 > C03 : 1
-  ... > C02 > C05 > C10 > C09 > C06 : 1
-  ... > C02 > C06 : 10
-  ... > C02 > C06 > C03 : 1
-  ... > C02 > C06 > C03 > C16 > C13 : 1
-  ... > C02 > C06 > C04 > C09 > C12 : 1
-  ... > C02 > C06 > C04 > C13 > C16 : 1
-  ... > C02 > C06 > C04 > C16 > C13 : 1
-  ... > C02 > C06 > C09 : 1
-  ... > C02 > C06 > C10 > C08 > C14 : 1
-  ... > C02 > C06 > C10 > C09 > C13 : 1
-  ... > C02 > C06 > C10 > C16 > C03 : 1
-  ... > C02 > C06 > C11 : 1
-  ... > C02 > C06 > C13 : 2
-  ... > C02 > C06 > C13 > C03 : 1
-  ... > C02 > C06 > C13 > C03 > C11 : 1
-  ... > C02 > C06 > C13 > C04 : 2
-  ... > C02 > C06 > C13 > C09 > C16 : 1
-  ... > C02 > C06 > C13 > C14 > C04 : 1
-  ... > C02 > C06 > C13 > C16 : 1
-  ... > C02 > C06 > C13 > C16 > C03 : 5
-  ... > C02 > C06 > C13 > C16 > C04 : 1
-  ... > C02 > C06 > C13 > C16 > C14 : 2
-  ... > C02 > C06 > C14 > C09 > C03 : 1
-  ... > C02 > C06 > C14 > C13 > C03 : 1
-  ... > C02 > C06 > C14 > C16 > C07 : 1
-  ... > C02 > C06 > C16 : 3
-  ... > C02 > C06 > C16 > C03 : 1
-  ... > C02 > C06 > C16 > C03 > C13 : 2
-  ... > C02 > C06 > C16 > C13 : 4
-  ... > C02 > C06 > C16 > C13 > C10 : 1
-  ... > C02 > C06 > C16 > C14 : 1
-  ... > C02 > C06 > C16 > C17 > C11 : 1
-  ... > C02 > C07 : 2
-  ... > C02 > C07 > C03 > C08 > C14 : 1
-  ... > C02 > C07 > C04 > C09 > C13 : 1
-  ... > C02 > C07 > C05 > C04 > C12 : 2
-  ... > C02 > C07 > C09 > C06 > C11 : 1
-  ... > C02 > C07 > C09 > C10 > C06 : 1
-  ... > C02 > C07 > C13 > C06 > C14 : 1
-  ... > C02 > C08 : 1
-  ... > C02 > C08 > C06 > C09 > C14 : 2
-  ... > C02 > C08 > C06 > C16 : 1
-  ... > C02 > C08 > C09 : 1
-  ... > C02 > C08 > C09 > C14 > C13 : 1
-  ... > C02 > C08 > C13 > C06 : 1
-  ... > C02 > C08 > C14 > C03 > C09 : 1
-  ... > C02 > C08 > C16 : 1
-  ... > C02 > C08 > C16 > C09 > C14 : 1
-  ... > C02 > C09 : 12
-  ... > C02 > C09 > C03 > C14 > C04 : 1
-  ... > C02 > C09 > C04 : 1
-  ... > C02 > C09 > C04 > C13 > C14 : 1
-  ... > C02 > C09 > C06 : 1
-  ... > C02 > C09 > C06 > C12 : 1
+  ... > SMI : 45
+  ... > SMI > DUN : 11
+  ... > SMI > DUN > ERN > END > ROU : 1
+  ... > SMI > DUN > ERN > SAL > HAY : 1
+  ... > SMI > DUN > HAY : 4
+  ... > SMI > DUN > HAY > ROU > END : 1
+  ... > SMI > DUN > HAY > END > ROU : 1
+  ... > SMI > DUN > HAY > END > SHE : 1
+  ... > SMI > DUN > HAY > LIN > TER : 1
+  ... > SMI > DUN > HAY > SAN : 1
+  ... > SMI > DUN > HAY > SAL > TER : 1
+  ... > SMI > DUN > HAY > TER > END : 1
+  ... > SMI > DUN > ROU : 7
+  ... > SMI > DUN > ROU > HAY > END : 1
+  ... > SMI > DUN > ROU > HAY > TER : 2
+  ... > SMI > DUN > ROU > END : 1
+  ... > SMI > DUN > ROU > END > ERN : 1
+  ... > SMI > DUN > ROU > OWE > ERN : 1
+  ... > SMI > DUN > ROU > LIN : 1
+  ... > SMI > DUN > ROU > LIN > SAL : 1
+  ... > SMI > DUN > ROU > LIN > TER : 1
+  ... > SMI > DUN > ROU > TER > END : 1
+  ... > SMI > DUN > ROU > SHE > HAY : 1
+  ... > SMI > DUN > END : 2
+  ... > SMI > DUN > END > HAY : 1
+  ... > SMI > DUN > END > ROU : 3
+  ... > SMI > DUN > END > ROU > SAL : 1
+  ... > SMI > DUN > END > ROU > FUR : 1
+  ... > SMI > DUN > END > OWE > HAY : 1
+  ... > SMI > DUN > END > SAL > HAY : 1
+  ... > SMI > DUN > END > TER > HAY : 1
+  ... > SMI > DUN > END > TER > ROU : 1
+  ... > SMI > DUN > OWE > ERN > TER : 1
+  ... > SMI > DUN > OWE > ROU > CLO : 1
+  ... > SMI > DUN > OWE > ROU > SAN : 1
+  ... > SMI > DUN > LIN > END > OWE : 1
+  ... > SMI > DUN > ALL > HAY > SHE : 1
+  ... > SMI > DUN > SAL > SHE > HAY : 1
+  ... > SMI > DUN > SAL > FUR > OWE : 1
+  ... > SMI > DUN > TER > OWE : 1
+  ... > SMI > DUN > TER > ALL > OWE : 1
+  ... > SMI > DUN > TER > SAL > OWE : 1
+  ... > SMI > DUN > TER > FUR > SAL : 1
+  ... > SMI > DUN > FUR > TER > HAY : 1
+  ... > SMI > ERN : 2
+  ... > SMI > ERN > DUN > END > HAY : 1
+  ... > SMI > ERN > CLO > HAY > TER : 1
+  ... > SMI > ERN > LIN > OWE > DUN : 2
+  ... > SMI > ERN > SAN : 2
+  ... > SMI > ERN > TER > CLO : 1
+  ... > SMI > ERN > TER > SAL > ROU : 1
+  ... > SMI > HAY : 35
+  ... > SMI > HAY > DUN > ROU : 2
+  ... > SMI > HAY > DUN > ROU > END : 3
+  ... > SMI > HAY > DUN > ROU > CLO : 1
+  ... > SMI > HAY > DUN > ROU > LIN : 2
+  ... > SMI > HAY > DUN > ROU > SAL : 1
+  ... > SMI > HAY > DUN > ROU > TER : 2
+  ... > SMI > HAY > DUN > TER > END : 1
+  ... > SMI > HAY > DUN > SHE > UIN : 1
+  ... > SMI > HAY > ERN > DUN > ROU : 1
+  ... > SMI > HAY > ERN > ROU : 1
+  ... > SMI > HAY > ERN > ROU > END : 2
+  ... > SMI > HAY > ERN > CLO : 1
+  ... > SMI > HAY > ERN > SAN > OWE : 1
+  ... > SMI > HAY > ROU : 8
+  ... > SMI > HAY > ROU > DUN : 6
+  ... > SMI > HAY > ROU > DUN > END : 2
+  ... > SMI > HAY > ROU > DUN > SAN : 2
+  ... > SMI > HAY > ROU > DUN > SAL : 2
+  ... > SMI > HAY > ROU > DUN > SHE : 1
+  ... > SMI > HAY > ROU > DUN > FUR : 1
+  ... > SMI > HAY > ROU > END : 2
+  ... > SMI > HAY > ROU > END > DUN : 5
+  ... > SMI > HAY > ROU > END > SAL : 1
+  ... > SMI > HAY > ROU > END > TER : 1
+  ... > SMI > HAY > ROU > LIN > DUN : 1
+  ... > SMI > HAY > ROU > SAL > TER : 1
+  ... > SMI > HAY > ROU > TER > DUN : 2
+  ... > SMI > HAY > ROU > TER > LIN : 1
+  ... > SMI > HAY > ROU > SHE > LIN : 1
+  ... > SMI > HAY > ROU > FUR > ALL : 1
+  ... > SMI > HAY > END : 5
+  ... > SMI > HAY > END > DUN : 1
+  ... > SMI > HAY > END > DUN > ROU : 1
+  ... > SMI > HAY > END > DUN > SAL : 1
+  ... > SMI > HAY > END > ERN : 2
+  ... > SMI > HAY > END > ROU > DUN : 2
+  ... > SMI > HAY > END > CLO > ROU : 1
+  ... > SMI > HAY > END > LIN > TER : 1
+  ... > SMI > HAY > END > UIN : 1
+  ... > SMI > HAY > CLO : 5
+  ... > SMI > HAY > CLO > TER > ROU : 1
+  ... > SMI > HAY > LIN : 1
+  ... > SMI > HAY > LIN > ROU > OWE : 1
+  ... > SMI > HAY > LIN > END > DUN : 2

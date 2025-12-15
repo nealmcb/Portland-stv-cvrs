@@ -120,13 +120,13 @@ Unique Ranking Expressions: 18895
 ```
 
 #### 3. Candidate Legend
-Maps short IDs (C01, C02, ...) to full candidate names:
+Maps compact 3-6 character slugs to full candidate names. Candidates are ordered by first-place votes (descending), with slugs derived from last names:
 ```
 CANDIDATE LEGEND
 --------------------------------------------------------------------------------
-C01  Candace Avalos
-C02  Cayle Tern
-C03  David Linn
+AVA  Candace Avalos
+SMI  Loretta Smith
+DUN  Jamie Dunphy
 ...
 ```
 
@@ -139,23 +139,23 @@ The core data showing all rankings and their counts:
 
 **Example without prefix**:
 ```
-C01 > C03 > C09 : 152
+AVA > SMI > DUN : 152
 ```
-Means: 152 ballots ranked C01 first, C03 second, C09 third.
+Means: 152 ballots ranked Candace Avalos (AVA) first, Loretta Smith (SMI) second, Jamie Dunphy (DUN) third.
 
 **Example with prefix compression**:
 ```
-PREFIX: C01 > C03
+PREFIX: AVA > SMI
 --------------------------------------------------------------------------------
   (exact match) : 45
-  ... > C09 : 152
-  ... > C09 > C06 : 38
+  ... > DUN : 152
+  ... > DUN > ERN : 38
 ```
 
 Means:
-- 45 ballots: `C01 > C03` (exact match, nothing more)
-- 152 ballots: `C01 > C03 > C09`
-- 38 ballots: `C01 > C03 > C09 > C06`
+- 45 ballots: `AVA > SMI` (exact match, nothing more)
+- 152 ballots: `AVA > SMI > DUN`
+- 38 ballots: `AVA > SMI > DUN > ERN`
 
 #### 6. Footer
 ```
@@ -228,18 +228,26 @@ MAX_LOOKAHEAD = 200  # Maximum lookahead for finding optimal prefix groups
 - Higher values may find better compression but take longer
 - Current value (200) provides good balance for Portland data
 
-### Changing Candidate ID Format
+### Changing Candidate Slug Generation
 
-In `3_generate_abstracts.py`, line ~195:
+The `generate_slug()` method in `3_generate_abstracts.py` creates 3-6 character slugs from candidate last names. To customize:
 
+**Current behavior:**
+- Candidates ordered by first-place votes (descending)
+- Slugs derived from last name (e.g., "Avalos" → "AVA")
+- Handles special cases (parenthetical nicknames, apostrophes, etc.)
+
+**To use sequential numbers instead:**
 ```python
+# In generate_abstract(), replace the slug generation with:
 candidate_to_id = {c: f"C{i+1:02d}" for i, c in enumerate(candidate_order)}
 ```
 
-Change the format string to customize IDs:
-- `f"C{i+1:03d}"` → C001, C002, C003, ...
-- `f"{i+1:02d}"` → 01, 02, 03, ... (no C prefix)
-- Use full names: `{c: c for c in candidate_order}` (no IDs)
+**To use full names:**
+```python
+# No ID mapping needed:
+candidate_to_id = {c: c for c in candidate_order}
+```
 
 ### Adding Additional Metadata
 

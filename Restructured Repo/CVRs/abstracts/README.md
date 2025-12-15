@@ -30,13 +30,13 @@ Each abstract file contains:
 - Count of unique ranking expressions
 
 ### Candidate Legend
-Maps short candidate IDs (C01, C02, etc.) to full candidate names. This keeps ranking expressions compact while maintaining human readability.
+Maps short candidate slugs (3-6 character codes) to full candidate names. Candidates are ordered by first-place votes (descending), with the most popular candidates getting first position. Slugs are derived from candidate last names for readability.
 
 Example:
 ```
-C01  Candace Avalos
-C02  Cayle Tern
-C03  David Linn
+AVA  Candace Avalos
+SMI  Loretta Smith
+DUN  Jamie Dunphy
 ```
 
 ### Preference Profile (Prefix-Compressed)
@@ -49,42 +49,43 @@ The core data: all unique ranking expressions and their counts.
 
 Example:
 ```
-C01 > C03 > C09 : 152
+AVA > SMI > DUN : 152
 ```
-This means 152 ballots ranked Candace Avalos first, David Linn second, and Loretta Smith third.
+This means 152 ballots ranked Candace Avalos (AVA) first, Loretta Smith (SMI) second, and Jamie Dunphy (DUN) third.
 
 #### Prefix Compression
 
 When multiple rankings share a common prefix, they are grouped together:
 
 ```
-PREFIX: C01 > C03
+PREFIX: AVA > SMI
 --------------------------------------------------------------------------------
   (exact match) : 45
-  ... > C09 : 152
-  ... > C09 > C06 : 38
-  ... > C13 : 67
+  ... > DUN : 152
+  ... > DUN > ERN : 38
+  ... > ROU : 67
 ```
 
 This means:
-- 45 ballots: `C01 > C03` (exact match, no additional choices)
-- 152 ballots: `C01 > C03 > C09`
-- 38 ballots: `C01 > C03 > C09 > C06`
-- 67 ballots: `C01 > C03 > C13`
+- 45 ballots: `AVA > SMI` (exact match, no additional choices)
+- 152 ballots: `AVA > SMI > DUN`
+- 38 ballots: `AVA > SMI > DUN > ERN`
+- 67 ballots: `AVA > SMI > ROU`
 
 ## Sorting Rules
 
 Rankings are sorted **lexicographically** by candidate order:
 
-1. Candidates are first sorted alphabetically by full name
-2. Each candidate gets a stable ID (C01, C02, ...)
-3. Rankings are sorted by comparing candidate IDs position-by-position
+1. Candidates are first sorted by first-place votes (descending) - most popular candidates first
+2. Each candidate gets a unique 3-6 character slug derived from their last name (e.g., AVA for Avalos, SMI for Smith)
+3. Rankings are sorted by comparing candidate positions (based on first-place vote order)
 4. Shorter rankings come before longer rankings with the same prefix
 
 This ensures:
 - **Deterministic output**: Same data always produces same order
-- **Natural grouping**: Similar voting patterns cluster together
-- **Efficient compression**: Common prefixes are easily identified
+- **Natural grouping**: Similar voting patterns cluster together, with popular candidates appearing first
+- **Efficient compression**: Common prefixes involving popular candidates are easily identified
+- **Human readability**: Slugs based on last names are more memorable than sequential numbers
 
 ## Lossless Property
 

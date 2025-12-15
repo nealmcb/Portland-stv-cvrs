@@ -61,8 +61,8 @@ def load_abstract_profile(abstract_path):
             if line.startswith('-' * 40):
                 continue
             
-            # Parse legend line: "C01  Candace Avalos"
-            match = re.match(r'(C\d+)\s+(.+)$', line.strip())
+            # Parse legend line: "AVA  Candace Avalos" or "O'C  David O'Connor"
+            match = re.match(r"([A-Z0-9']{3,6})\s+(.+)$", line.strip())
             if match:
                 cid, name = match.groups()
                 candidate_legend[cid] = name.strip()

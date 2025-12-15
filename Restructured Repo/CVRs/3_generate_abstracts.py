@@ -23,7 +23,6 @@ class RankingAbstract:
     """Generate prefix-compressed ranking abstracts for ranked-choice elections."""
     
     # Configuration constants
-    CANDIDATE_ID_FORMAT = "C{:02d}"  # Format for candidate IDs (e.g., C01, C02, ...)
     MIN_GROUP_SIZE = 20  # Minimum rankings needed to form a prefix group
     MAX_LOOKAHEAD = 200  # Maximum lookahead for finding optimal prefix groups (performance)
     
@@ -40,6 +39,7 @@ class RankingAbstract:
         self.ballots = []
         self.candidates = set()
         self.preference_profile = {}  # ranking tuple -> count
+        self.first_place_votes = {}  # candidate -> first place vote count
         
     def load_ballots(self):
         """Load ballots from CSV file and build preference profile."""
@@ -58,6 +58,12 @@ class RankingAbstract:
                         if candidate not in ranking:
                             ranking.append(candidate)
                             self.candidates.add(candidate)
+                            
+                            # Count first-place votes
+                            if i == 1:  # This is the first preference
+                                if candidate not in self.first_place_votes:
+                                    self.first_place_votes[candidate] = 0
+                                self.first_place_votes[candidate] += 1
                 
                 # Convert to tuple for hashing
                 ranking_tuple = tuple(ranking)
@@ -69,13 +75,95 @@ class RankingAbstract:
                 else:
                     self.preference_profile[ranking_tuple] = 1
     
+    def generate_slug(self, name: str, existing_slugs: set) -> str:
+        """
+        Generate a compact 3-6 character slug from a candidate name.
+        
+        Strategy:
+        1. Try first 3 letters of last name (or full name if no space)
+        2. If collision, try first 4 letters
+        3. If still collision, try first letter of first name + first 3-5 letters of last name
+        4. Continue until unique slug is found (3-6 chars)
+        
+        Args:
+            name: Full candidate name
+            existing_slugs: Set of slugs already assigned
+            
+        Returns:
+            Unique slug of 3-6 characters
+        """
+        # Clean up name - remove parenthetical content
+        import re
+        name = name.strip()
+        # Remove parenthetical nicknames like "Michael (Mike) Sands" or "Kelly Janes (KJ)"
+        if '(' in name:
+            # Remove the parenthetical part
+            name = re.sub(r'\s*\([^)]*\)\s*', ' ', name).strip()
+        
+        # Remove apostrophes from name for slug generation
+        name_for_slug = name.replace("'", "")
+        
+        parts = name_for_slug.split()
+        
+        # Extract first and last name
+        if len(parts) >= 2:
+            first_name = parts[0]
+            last_name = parts[-1]
+        else:
+            # Single name or compound (use the whole thing)
+            first_name = name_for_slug
+            last_name = name_for_slug
+        
+        # Try different slug strategies
+        strategies = [
+            lambda: last_name[:3].upper(),
+            lambda: last_name[:4].upper(),
+            lambda: last_name[:5].upper(),
+            lambda: (first_name[0] + last_name[:2]).upper(),
+            lambda: (first_name[0] + last_name[:3]).upper(),
+            lambda: (first_name[0] + last_name[:4]).upper(),
+            lambda: (first_name[0] + last_name[:5]).upper(),
+            lambda: (first_name[:2] + last_name[:2]).upper(),
+            lambda: (first_name[:2] + last_name[:3]).upper(),
+            lambda: (first_name[:2] + last_name[:4]).upper(),
+        ]
+        
+        for strategy in strategies:
+            slug = strategy()
+            if slug not in existing_slugs and 3 <= len(slug) <= 6:
+                return slug
+        
+        # Fallback: add numbers if needed
+        base_slug = last_name[:4].upper()
+        for i in range(1, 100):
+            slug = f"{base_slug}{i}"
+            if slug not in existing_slugs and len(slug) <= 6:
+                return slug
+        
+        # Ultimate fallback
+        return last_name[:6].upper()
+    
     def get_canonical_candidate_order(self) -> List[str]:
         """
-        Return candidates in canonical (lexicographic) order.
+        Return candidates ordered by first-place votes (descending).
         
-        This ensures deterministic output across runs.
+        This ensures the most popular candidates get shorter, more recognizable slugs.
+        Candidates with no first-place votes are sorted alphabetically at the end.
         """
-        return sorted(list(self.candidates))
+        # Separate candidates with and without first-place votes
+        candidates_with_votes = [(c, self.first_place_votes.get(c, 0)) for c in self.candidates if self.first_place_votes.get(c, 0) > 0]
+        candidates_without_votes = [c for c in self.candidates if self.first_place_votes.get(c, 0) == 0]
+        
+        # Sort by first-place votes (descending)
+        candidates_with_votes.sort(key=lambda x: x[1], reverse=True)
+        
+        # Sort candidates without votes alphabetically
+        candidates_without_votes.sort()
+        
+        # Combine: voted candidates first, then others
+        ordered = [c for c, _ in candidates_with_votes] + candidates_without_votes
+        
+        return ordered
     
     def get_sorted_rankings(self) -> List[Tuple[tuple, int]]:
         """
@@ -211,8 +299,13 @@ class RankingAbstract:
         sorted_rankings = self.get_sorted_rankings()
         candidate_order = self.get_canonical_candidate_order()
         
-        # Create candidate ID mapping using configured format
-        candidate_to_id = {c: self.CANDIDATE_ID_FORMAT.format(i+1) for i, c in enumerate(candidate_order)}
+        # Create candidate slug mapping
+        existing_slugs = set()
+        candidate_to_id = {}
+        for candidate in candidate_order:
+            slug = self.generate_slug(candidate, existing_slugs)
+            existing_slugs.add(slug)
+            candidate_to_id[candidate] = slug
         
         # Generate prefix groups
         groups = self.generate_prefix_groups(sorted_rankings)
