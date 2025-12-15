@@ -138,6 +138,10 @@ def load_abstract_profile(abstract_path):
     return profile, candidate_legend
 
 
+# Configuration constant
+MAX_ERRORS_TO_DISPLAY = 5  # Maximum number of errors to show in detail
+
+
 def verify_district(district):
     """Verify a single district's abstract against original CVR."""
     print(f"\nVerifying District {district}...")
@@ -172,11 +176,11 @@ def verify_district(district):
     
     if missing_in_abstract:
         print(f"\n❌ ERROR: {len(missing_in_abstract)} rankings missing in abstract")
-        for ranking in list(missing_in_abstract)[:5]:
+        for ranking in list(missing_in_abstract)[:MAX_ERRORS_TO_DISPLAY]:
             print(f"    Missing: {ranking}")
     elif extra_in_abstract:
         print(f"\n❌ ERROR: {len(extra_in_abstract)} extra rankings in abstract")
-        for ranking in list(extra_in_abstract)[:5]:
+        for ranking in list(extra_in_abstract)[:MAX_ERRORS_TO_DISPLAY]:
             print(f"    Extra: {ranking}")
     else:
         print("  ✓ All rankings present in abstract")
@@ -195,7 +199,7 @@ def verify_district(district):
         
         if orig_count != abst_count:
             count_mismatches += 1
-            if count_mismatches <= 5:
+            if count_mismatches <= MAX_ERRORS_TO_DISPLAY:
                 print(f"  ❌ Count mismatch for {ranking}: orig={orig_count}, abstract={abst_count}")
     
     if count_mismatches > 0:

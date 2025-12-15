@@ -22,6 +22,11 @@ from pathlib import Path
 class RankingAbstract:
     """Generate prefix-compressed ranking abstracts for ranked-choice elections."""
     
+    # Configuration constants
+    CANDIDATE_ID_FORMAT = "C{:02d}"  # Format for candidate IDs (e.g., C01, C02, ...)
+    MIN_GROUP_SIZE = 20  # Minimum rankings needed to form a prefix group
+    MAX_LOOKAHEAD = 200  # Maximum lookahead for finding optimal prefix groups (performance)
+    
     def __init__(self, district: int, csv_path: str):
         """
         Initialize with district number and path to CVR CSV file.
@@ -125,17 +130,20 @@ class RankingAbstract:
         return first_ranking[:prefix_len]
     
     def generate_prefix_groups(self, sorted_rankings: List[Tuple[tuple, int]],
-                               min_group_size: int = 20) -> List[Tuple[tuple, List[Tuple[tuple, int]]]]:
+                               min_group_size: int = None) -> List[Tuple[tuple, List[Tuple[tuple, int]]]]:
         """
         Group rankings by common prefix for compression.
         
         Args:
             sorted_rankings: Lexicographically sorted rankings
-            min_group_size: Minimum number of rankings to form a group
+            min_group_size: Minimum number of rankings to form a group (uses class constant if None)
             
         Returns:
             List of (prefix, group_rankings) tuples
         """
+        if min_group_size is None:
+            min_group_size = self.MIN_GROUP_SIZE
+            
         groups = []
         i = 0
         
@@ -144,8 +152,8 @@ class RankingAbstract:
             best_prefix = ()
             best_end = i + 1
             
-            # Look ahead to find best grouping
-            for end in range(i + min_group_size, min(i + 200, len(sorted_rankings) + 1)):
+            # Look ahead to find best grouping (limited by MAX_LOOKAHEAD for performance)
+            for end in range(i + min_group_size, min(i + self.MAX_LOOKAHEAD, len(sorted_rankings) + 1)):
                 rankings_only = [r[0] for r in sorted_rankings[i:end]]
                 prefix = self.find_common_prefix(rankings_only, 0, len(rankings_only))
                 
@@ -203,8 +211,8 @@ class RankingAbstract:
         sorted_rankings = self.get_sorted_rankings()
         candidate_order = self.get_canonical_candidate_order()
         
-        # Create candidate ID mapping (C01, C02, etc.)
-        candidate_to_id = {c: f"C{i+1:02d}" for i, c in enumerate(candidate_order)}
+        # Create candidate ID mapping using configured format
+        candidate_to_id = {c: self.CANDIDATE_ID_FORMAT.format(i+1) for i, c in enumerate(candidate_order)}
         
         # Generate prefix groups
         groups = self.generate_prefix_groups(sorted_rankings)
