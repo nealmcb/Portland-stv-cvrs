@@ -2,4 +2,5 @@ CVRS/*.csv
 *raw_from_city*
 
 .venv
-*.chain
+*.chain__pycache__/
+*.pyc
