@@ -1,0 +1,150 @@
+================================================================================
+ABSTRACT OF VOTES - CITY COUNCIL DISTRICT 1
+City of Portland, Oregon
+November 2024 General Election
+================================================================================
+
+CONTEST INFORMATION
+--------------------------------------------------------------------------------
+Contest: City Council District 1
+Election Method: Single Transferable Vote (STV)
+Seats: 3
+Total Ballots with Rankings: 43669
+Unique Ranking Expressions: 18895
+
+CANDIDATE LEGEND
+--------------------------------------------------------------------------------
+AVA  Candace Avalos
+SMI  Loretta Smith
+DUN  Jamie Dunphy
+ERN  Noah Ernst
+HAY  Terrence Hayes
+ROU  Steph Routh
+END  Timur Ender
+CLO  Doug Clove
+OWE  Peggy Sue Owens
+LIN  David Linn
+ALL  Joe Allen
+SAN  Michael (Mike) Sands
+SAL  Deian Salazar
+TER  Cayle Tern
+SHE  Thomas Shervey
+FUR  Joe Furi
+UIN  Uncertified Write In
+
+EXPLANATION
+--------------------------------------------------------------------------------
+This abstract lists all unique ranking expressions that appear in the
+Cast Vote Record (CVR). Rankings are sorted lexicographically by candidate
+order and grouped by common prefix for compression.
+
+Format: <ranking expression> : <count>
+Symbol '>' means 'preferred over'
+(empty) means no ranking was cast
+
+Prefix compression: When multiple rankings share a common prefix, the
+prefix is stated once, followed by the distinct suffixes with counts.
+
+PREFERENCE PROFILE (PREFIX-COMPRESSED)
+================================================================================
+
+(empty) : 798
+PREFIX: AVA
+--------------------------------------------------------------------------------
+  (exact match) : 535
+  ... > SMI : 45
+  ... > SMI > DUN : 11
+  ... > SMI > DUN > ERN > END > ROU : 1
+  ... > SMI > DUN > ERN > SAL > HAY : 1
+  ... > SMI > DUN > HAY : 4
+  ... > SMI > DUN > HAY > ROU > END : 1
+  ... > SMI > DUN > HAY > END > ROU : 1
+  ... > SMI > DUN > HAY > END > SHE : 1
+  ... > SMI > DUN > HAY > LIN > TER : 1
+  ... > SMI > DUN > HAY > SAN : 1
+  ... > SMI > DUN > HAY > SAL > TER : 1
+  ... > SMI > DUN > HAY > TER > END : 1
+  ... > SMI > DUN > ROU : 7
+  ... > SMI > DUN > ROU > HAY > END : 1
+  ... > SMI > DUN > ROU > HAY > TER : 2
+  ... > SMI > DUN > ROU > END : 1
+  ... > SMI > DUN > ROU > END > ERN : 1
+  ... > SMI > DUN > ROU > OWE > ERN : 1
+  ... > SMI > DUN > ROU > LIN : 1
+  ... > SMI > DUN > ROU > LIN > SAL : 1
+  ... > SMI > DUN > ROU > LIN > TER : 1
+  ... > SMI > DUN > ROU > TER > END : 1
+  ... > SMI > DUN > ROU > SHE > HAY : 1
+  ... > SMI > DUN > END : 2
+  ... > SMI > DUN > END > HAY : 1
+  ... > SMI > DUN > END > ROU : 3
+  ... > SMI > DUN > END > ROU > SAL : 1
+  ... > SMI > DUN > END > ROU > FUR : 1
+  ... > SMI > DUN > END > OWE > HAY : 1
+  ... > SMI > DUN > END > SAL > HAY : 1
+  ... > SMI > DUN > END > TER > HAY : 1
+  ... > SMI > DUN > END > TER > ROU : 1
+  ... > SMI > DUN > OWE > ERN > TER : 1
+  ... > SMI > DUN > OWE > ROU > CLO : 1
+  ... > SMI > DUN > OWE > ROU > SAN : 1
+  ... > SMI > DUN > LIN > END > OWE : 1
+  ... > SMI > DUN > ALL > HAY > SHE : 1
+  ... > SMI > DUN > SAL > SHE > HAY : 1
+  ... > SMI > DUN > SAL > FUR > OWE : 1
+  ... > SMI > DUN > TER > OWE : 1
+  ... > SMI > DUN > TER > ALL > OWE : 1
+  ... > SMI > DUN > TER > SAL > OWE : 1
+  ... > SMI > DUN > TER > FUR > SAL : 1
+  ... > SMI > DUN > FUR > TER > HAY : 1
+  ... > SMI > ERN : 2
+  ... > SMI > ERN > DUN > END > HAY : 1
+  ... > SMI > ERN > CLO > HAY > TER : 1
+  ... > SMI > ERN > LIN > OWE > DUN : 2
+  ... > SMI > ERN > SAN : 2
+  ... > SMI > ERN > TER > CLO : 1
+  ... > SMI > ERN > TER > SAL > ROU : 1
+  ... > SMI > HAY : 35
+  ... > SMI > HAY > DUN > ROU : 2
+  ... > SMI > HAY > DUN > ROU > END : 3
+  ... > SMI > HAY > DUN > ROU > CLO : 1
+  ... > SMI > HAY > DUN > ROU > LIN : 2
+  ... > SMI > HAY > DUN > ROU > SAL : 1
+  ... > SMI > HAY > DUN > ROU > TER : 2
+  ... > SMI > HAY > DUN > TER > END : 1
+  ... > SMI > HAY > DUN > SHE > UIN : 1
+  ... > SMI > HAY > ERN > DUN > ROU : 1
+  ... > SMI > HAY > ERN > ROU : 1
+  ... > SMI > HAY > ERN > ROU > END : 2
+  ... > SMI > HAY > ERN > CLO : 1
+  ... > SMI > HAY > ERN > SAN > OWE : 1
+  ... > SMI > HAY > ROU : 8
+  ... > SMI > HAY > ROU > DUN : 6
+  ... > SMI > HAY > ROU > DUN > END : 2
+  ... > SMI > HAY > ROU > DUN > SAN : 2
+  ... > SMI > HAY > ROU > DUN > SAL : 2
+  ... > SMI > HAY > ROU > DUN > SHE : 1
+  ... > SMI > HAY > ROU > DUN > FUR : 1
+  ... > SMI > HAY > ROU > END : 2
+  ... > SMI > HAY > ROU > END > DUN : 5
+  ... > SMI > HAY > ROU > END > SAL : 1
+  ... > SMI > HAY > ROU > END > TER : 1
+  ... > SMI > HAY > ROU > LIN > DUN : 1
+  ... > SMI > HAY > ROU > SAL > TER : 1
+  ... > SMI > HAY > ROU > TER > DUN : 2
+  ... > SMI > HAY > ROU > TER > LIN : 1
+  ... > SMI > HAY > ROU > SHE > LIN : 1
+  ... > SMI > HAY > ROU > FUR > ALL : 1
+  ... > SMI > HAY > END : 5
+  ... > SMI > HAY > END > DUN : 1
+  ... > SMI > HAY > END > DUN > ROU : 1
+  ... > SMI > HAY > END > DUN > SAL : 1
+  ... > SMI > HAY > END > ERN : 2
+  ... > SMI > HAY > END > ROU > DUN : 2
+  ... > SMI > HAY > END > CLO > ROU : 1
+  ... > SMI > HAY > END > LIN > TER : 1
+  ... > SMI > HAY > END > UIN : 1
+  ... > SMI > HAY > CLO : 5
+  ... > SMI > HAY > CLO > TER > ROU : 1
+  ... > SMI > HAY > LIN : 1
+  ... > SMI > HAY > LIN > ROU > OWE : 1
+  ... > SMI > HAY > LIN > END > DUN : 2
