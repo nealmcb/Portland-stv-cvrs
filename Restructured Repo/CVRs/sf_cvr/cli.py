@@ -128,14 +128,13 @@ def run_export(args):
         print("Run 'fetch' step first.", file=sys.stderr)
         sys.exit(1)
 
-    export_all_contests(
+    csv_path = export_all_contests(
         extracted_dir,
         args.output_dir,
         rcv_only=args.rcv_only
     )
 
-    csv_dir = args.output_dir / "csv_cvrs"
-    print(f"\nCSV files: {csv_dir}")
+    print(f"\nUnified CSV file: {csv_path}")
     print()
 
 
@@ -146,25 +145,25 @@ def run_stats(args):
     print("="*80)
 
     extracted_dir = args.output_dir / "extracted"
-    csv_dir = args.output_dir / "csv_cvrs"
+    csv_path = args.output_dir / "cvr_all_contests.csv"
 
     if not extracted_dir.exists():
         print(f"Error: Extracted directory not found: {extracted_dir}", file=sys.stderr)
         print("Run 'fetch' step first.", file=sys.stderr)
         sys.exit(1)
 
-    if not csv_dir.exists():
-        print(f"Error: CSV directory not found: {csv_dir}", file=sys.stderr)
+    if not csv_path.exists():
+        print(f"Error: CSV file not found: {csv_path}", file=sys.stderr)
         print("Run 'export' step first.", file=sys.stderr)
         sys.exit(1)
 
     generate_contest_statistics(
         extracted_dir,
-        csv_dir,
+        csv_path,
         args.output_dir
     )
 
-    blt_dir = args.output_dir / "blt_profiles"
+    blt_dir = args.output_dir / "ranking_profiles"
     stats_file = args.output_dir / "contest_statistics.md"
 
     print(f"\nBLT files: {blt_dir}")

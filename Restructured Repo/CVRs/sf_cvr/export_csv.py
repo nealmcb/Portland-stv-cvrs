@@ -2,130 +2,64 @@
 """
 Export contests to CSV format (Dominion-style CVR).
 
-Generates CSV files with one row per ballot, columns for each candidate/rank combination.
+Generates a single CSV file with all contests, one row per ballot.
 """
 
 import csv
 from pathlib import Path
-from typing import Dict, List, Set
-from collections import defaultdict
+from typing import Dict, List, Tuple
 
 from .manifests import Manifests, Contest, Candidate
 from .parse_dominion import Ballot, iter_all_ballots
 
 
-def export_contest_csv(
-    contest: Contest,
-    manifests: Manifests,
-    ballots: List[Ballot],
-    output_path: Path
-):
+def build_column_structure(contests: List[Contest], manifests: Manifests):
     """
-    Export a single contest to CSV format (Dominion-style).
+    Build column headers and mapping for all contests.
 
-    Args:
-        contest: Contest to export
-        manifests: Manifest data (for candidate lookups)
-        ballots: List of all ballots
-        output_path: Path to write CSV file
+    Returns:
+        Tuple of (headers, column_map)
+        - headers: List of column header strings
+        - column_map: Dict mapping (contest_id, candidate_id, rank) -> column_index
     """
-    candidates = manifests.get_contest_candidates(contest.id)
-    non_writein_candidates = [c for c in candidates if not c.is_writein]
+    headers = ["CvrNumber", "TabulatorNum", "BatchId", "RecordId", "BallotType"]
+    column_map = {}
+    col_idx = len(headers)
 
-    # Build metadata columns
-    metadata_cols = ["CvrNumber", "TabulatorNum", "BatchId", "RecordId", "BallotType"]
+    for contest in contests:
+        candidates = manifests.get_contest_candidates(contest.id)
+        non_writein = [c for c in candidates if not c.is_writein]
 
-    # Build candidate column headers
-    # For RCV, we need multiple columns per candidate (one per rank)
-    if contest.is_rcv:
-        candidate_cols = []
-        for rank in range(1, contest.num_of_ranks + 1):
-            for candidate in non_writein_candidates:
-                candidate_cols.append(candidate.description)
-    else:
-        candidate_cols = [c.description for c in non_writein_candidates]
+        if contest.is_rcv:
+            # RCV: Candidate(1), Candidate(2), etc.
+            for rank in range(1, contest.num_of_ranks + 1):
+                for candidate in non_writein:
+                    header = f"{contest.description} - {candidate.description}({rank})"
+                    headers.append(header)
+                    column_map[(contest.id, candidate.id, rank)] = col_idx
+                    col_idx += 1
+        else:
+            # Non-RCV: Just candidate name
+            for candidate in non_writein:
+                header = f"{contest.description} - {candidate.description}"
+                headers.append(header)
+                column_map[(contest.id, candidate.id, 0)] = col_idx  # rank=0 for non-RCV
+                col_idx += 1
 
-    # Write CSV
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-
-    with open(output_path, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-
-        # Row 1: Contest name header (spanning candidate columns)
-        row1 = [''] * len(metadata_cols)  # Empty for metadata columns
-        for _ in candidate_cols:
-            row1.append(contest.description)
-        writer.writerow(row1)
-
-        # Row 2: Candidate names
-        row2 = metadata_cols + candidate_cols
-        writer.writerow(row2)
-
-        # Data rows
-        ballot_count = 0
-        cvr_number = 1
-
-        for ballot in ballots:
-            # Build metadata
-            row = [
-                str(cvr_number),
-                str(ballot.tabulator_id) if ballot.tabulator_id else '',
-                str(ballot.batch_id) if ballot.batch_id else '',
-                str(ballot.ballot_id),
-                str(ballot.ballot_type_id) if ballot.ballot_type_id else ''
-            ]
-
-            # Check if contest appears on this ballot
-            if contest.id in ballot.contests:
-                ballot_contest = ballot.contests[contest.id]
-
-                if contest.is_rcv:
-                    # RCV: fill in marks by rank and candidate
-                    for rank in range(1, contest.num_of_ranks + 1):
-                        for candidate in non_writein_candidates:
-                            # Check if this candidate was marked at this rank
-                            marked = False
-                            for mark in ballot_contest.marks:
-                                if mark.candidate_id == candidate.id and mark.rank == rank and mark.is_vote:
-                                    marked = True
-                                    break
-
-                            row.append("1" if marked else "0")
-                else:
-                    # Non-RCV: fill in marks by candidate
-                    for candidate in non_writein_candidates:
-                        marked = False
-                        for mark in ballot_contest.marks:
-                            if mark.candidate_id == candidate.id and mark.is_vote:
-                                marked = True
-                                break
-
-                        row.append("1" if marked else "0")
-            else:
-                # Contest not on this ballot - add empty marks
-                num_marks = len(non_writein_candidates) * (contest.num_of_ranks if contest.is_rcv else 1)
-                for _ in range(num_marks):
-                    row.append("")
-
-            writer.writerow(row)
-            ballot_count += 1
-            cvr_number += 1
-
-    print(f"  Wrote {ballot_count:,} ballots to {output_path.name}")
-    return ballot_count
+    return headers, column_map
 
 
-def export_all_contests(
+def export_all_contests_single_csv(
     extracted_dir: Path,
-    output_dir: Path,
+    output_path: Path,
     rcv_only: bool = False
 ):
     """
-    Export all contests to CSV format.
+    Export all contests to a single CSV file.
 
     Args:
         extracted_dir: Directory with extracted CVR files
-        output_dir: Directory to write CSV files
+        output_path: Path to output CSV file
         rcv_only: If True, only export RCV contests
     """
     # Load manifests
@@ -140,41 +74,106 @@ def export_all_contests(
         contests = manifests.get_all_contests()
         print(f"Found {len(contests)} total contests")
 
-    # Load all ballots into memory
-    # (This is necessary since we need to iterate per-contest)
+    # Sort contests by ID for determinism
+    contests = sorted(contests, key=lambda c: c.id)
+
+    # Build column structure
+    print("Building column headers...")
+    headers, column_map = build_column_structure(contests, manifests)
+    print(f"Total columns: {len(headers)}")
+
+    # Load all ballots
     print("\nLoading all ballots...")
     ballots = list(iter_all_ballots(extracted_dir))
     print(f"Loaded {len(ballots):,} ballots")
 
-    # Export each contest
-    print(f"\nExporting contests to: {output_dir}")
-    csv_dir = output_dir / "csv_cvrs"
-    csv_dir.mkdir(parents=True, exist_ok=True)
+    # Write CSV
+    print(f"\nWriting CSV to: {output_path}")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
+    with open(output_path, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+
+        # Single header row
+        writer.writerow(headers)
+
+        # Data rows
+        for cvr_number, ballot in enumerate(ballots, 1):
+            # Initialize row with metadata and empty marks
+            row = [
+                str(cvr_number),
+                str(ballot.tabulator_id) if ballot.tabulator_id else '',
+                str(ballot.batch_id) if ballot.batch_id else '',
+                str(ballot.ballot_id),
+                str(ballot.ballot_type_id) if ballot.ballot_type_id else ''
+            ]
+
+            # Add empty marks for all columns
+            num_mark_cols = len(headers) - 5  # Subtract metadata columns
+            row.extend([''] * num_mark_cols)
+
+            # Fill in marks for contests on this ballot
+            for contest_id, ballot_contest in ballot.contests.items():
+                for mark in ballot_contest.marks:
+                    if not mark.is_vote:
+                        continue
+
+                    # Look up column index
+                    rank = mark.rank if mark.rank > 0 else 0  # 0 for non-RCV
+                    key = (contest_id, mark.candidate_id, rank)
+
+                    if key in column_map:
+                        col_idx = column_map[key]
+                        row[col_idx] = "1"
+
+            writer.writerow(row)
+
+            if cvr_number % 10000 == 0:
+                print(f"  Wrote {cvr_number:,} ballots...")
+
+    print(f"\nComplete! Wrote {len(ballots):,} ballots to {output_path}")
+
+    # Print contest summary
+    print("\nContests included:")
     for contest in contests:
-        print(f"\nExporting: {contest.description}")
-        print(f"  ID: {contest.id}, Slug: {contest.slug}")
-        if contest.is_rcv:
-            print(f"  Type: RCV ({contest.num_of_ranks} ranks)")
-        else:
-            print(f"  Type: Plurality")
-
         candidates = manifests.get_contest_candidates(contest.id)
-        print(f"  Candidates: {len(candidates)}")
+        num_candidates = len([c for c in candidates if not c.is_writein])
+        if contest.is_rcv:
+            print(f"  {contest.description}: {num_candidates} candidates, {contest.num_of_ranks} ranks")
+        else:
+            print(f"  {contest.description}: {num_candidates} candidates")
 
-        output_path = csv_dir / f"{contest.slug}.csv"
-        export_contest_csv(contest, manifests, ballots, output_path)
+
+def export_all_contests(
+    extracted_dir: Path,
+    output_dir: Path,
+    rcv_only: bool = False
+):
+    """
+    Export all contests to CSV format.
+
+    This now creates a single unified CSV file instead of per-contest files.
+
+    Args:
+        extracted_dir: Directory with extracted CVR files
+        output_dir: Directory to write CSV file
+        rcv_only: If True, only export RCV contests
+    """
+    csv_path = output_dir / "cvr_all_contests.csv"
+    export_all_contests_single_csv(extracted_dir, csv_path, rcv_only=rcv_only)
+
+    return csv_path
 
 
 if __name__ == "__main__":
     # Test
     import sys
     if len(sys.argv) < 3:
-        print("Usage: export_csv.py <extracted_dir> <output_dir> [--rcv-only]")
+        print("Usage: export_csv.py <extracted_dir> <output_file> [--rcv-only]")
         sys.exit(1)
 
     extracted_dir = Path(sys.argv[1])
-    output_dir = Path(sys.argv[2])
+    output_path = Path(sys.argv[2])
     rcv_only = "--rcv-only" in sys.argv
 
-    export_all_contests(extracted_dir, output_dir, rcv_only=rcv_only)
+    export_all_contests_single_csv(extracted_dir, output_path, rcv_only=rcv_only)

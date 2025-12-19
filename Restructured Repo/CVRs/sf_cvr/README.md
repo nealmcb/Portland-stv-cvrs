@@ -61,32 +61,28 @@ CVRs/sf_20241105/
 │   ├── ContestManifest.json             # Extracted manifest files
 │   ├── CandidateManifest.json
 │   └── CvrExport_*.json                 # Extracted CVR files
-├── csv_cvrs/
-│   ├── contest_18_mayor.csv             # CSV format CVRs
-│   ├── contest_23_member_board_of_supervisors_district_1.csv
-│   └── ...
-├── blt_profiles/
-│   ├── contest_18_mayor.blt             # BLT preference profiles
-│   ├── contest_23_member_board_of_supervisors_district_1.blt
+├── cvr_all_contests.csv                 # Unified CSV with all contests
+├── ranking_profiles/
+│   ├── sf_20241105_mayor.blt            # BLT preference profiles
+│   ├── sf_20241105_board-of-supervisors-district-1.blt
 │   └── ...
 └── contest_statistics.md                # Markdown table with stats
 ```
 
 ## CSV Format
 
-CSV files follow the Dominion format used in Colorado:
+The unified CSV file follows the Dominion format used in Colorado, with all contests in a single file:
 
-- **Row 1:** Contest name (repeated across candidate columns)
-- **Row 2:** Column headers (metadata + candidate names)
+- **Row 1:** Column headers (metadata + all contest/candidate columns)
 - **Metadata columns:** `CvrNumber`, `TabulatorNum`, `BatchId`, `RecordId`, `BallotType`
-- **Candidate columns:** For RCV contests, each candidate appears once per rank
+- **Contest columns:** For RCV contests, each candidate appears once per rank
+- **Format:** `Contest Name - Candidate Name(Rank)` for RCV, `Contest Name - Candidate Name` for non-RCV
 
 Example for RCV contest with 3 candidates and 5 ranks:
 
 ```csv
-,,,,,MAYOR,MAYOR,MAYOR,...
-CvrNumber,TabulatorNum,BatchId,RecordId,BallotType,Alice,Bob,Carol,Alice,Bob,Carol,...
-1,5,1,X,25,1,0,0,0,1,0,...
+CvrNumber,TabulatorNum,BatchId,RecordId,BallotType,MAYOR - Alice(1),MAYOR - Bob(1),MAYOR - Carol(1),MAYOR - Alice(2),MAYOR - Bob(2),...
+1,5,1,X,25,1,0,0,0,1,...
 ```
 
 ## BLT Format
@@ -164,8 +160,8 @@ python -m sf_cvr all 20241105 \
 ```
 
 This will process all 11 RCV contests (Mayor + 10 Board of Supervisors districts) and generate:
-- 11 CSV CVR files
-- 11 BLT files
+- 1 unified CSV CVR file with all contests
+- 11 BLT ranking profile files (in `ranking_profiles/` directory)
 - 1 statistics table
 
 ### Custom Output Directory
